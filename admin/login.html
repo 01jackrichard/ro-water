@@ -1,1 +1,98 @@
-<!doctype html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Admin Login - R-Tech Pure Water</title><link rel="stylesheet" href="css/admin.css"></head><body><div class="login-container"><div class="login-card"><div class="logo">💧 R-Tech Pure Water</div><h1>Admin Login</h1><p>Manage your RO Water bookings</p><div id="error" class="error" style="display:none"></div><form id="loginForm"><label>Username</label><input id="username" required placeholder="Enter username"><label>Password</label><input id="password" type="password" required placeholder="Enter password"><button type="submit">Login</button></form></div></div><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="../js/supabase-config.js"></script><script src="../js/supabase-app.js"></script><script>loginForm.onsubmit=async e=>{e.preventDefault();try{const email=window.ADMIN_LOGIN_EMAIL;if(!email||email.startsWith("YOUR_"))throw Error("Set ADMIN_LOGIN_EMAIL in js/supabase-config.js");const r=await getSupabaseClient().auth.signInWithPassword({email,password:password.value});if(r.error)throw r.error;location.href="dashboard.html"}catch(x){error.textContent=x.message;error.style.display="block"}}</script></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Owner Login - R-Tech Pure Water</title>
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+<div class="login-container">
+    <div class="login-card">
+        <div class="logo">💧 R-Tech Pure Water</div>
+        <h1>Owner Login</h1>
+        <p>Sign in to access your business dashboard</p>
+        <div id="error" class="error" style="display:none"></div>
+        <form id="loginForm">
+            <label for="username">Username or Email</label>
+            <input id="username" type="text" required placeholder="Enter username or email" autocomplete="username">
+            
+            <label for="password">Password</label>
+            <input id="password" type="password" required placeholder="Enter password" autocomplete="current-password">
+            
+            <button type="submit" id="submitBtn">Login</button>
+        </form>
+        <p style="margin-top:20px;text-align:center;font-size:13px;">
+            <a href="../index.html" style="color:#0077b6;text-decoration:none;">← Back to Website</a>
+        </p>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../js/supabase-config.js"></script>
+<script src="../js/supabase-app.js"></script>
+<script>
+// Redirect to dashboard if already logged in as authorized owner
+(async () => {
+    try {
+        const sb = getSupabaseClient();
+        const { data } = await sb.auth.getSession();
+        if (data && data.session && data.session.user) {
+            const adminEmail = (window.ADMIN_LOGIN_EMAIL || '').trim().toLowerCase();
+            if (!adminEmail || data.session.user.email.toLowerCase() === adminEmail) {
+                location.href = "dashboard.html";
+            }
+        }
+    } catch (_) {}
+})();
+
+document.getElementById("loginForm").onsubmit = async (e) => {
+    e.preventDefault();
+    const btn = document.getElementById("submitBtn");
+    const err = document.getElementById("error");
+    err.style.display = "none";
+    btn.disabled = true;
+    btn.textContent = "Logging in...";
+
+    try {
+        const adminEmail = (window.ADMIN_LOGIN_EMAIL || "").trim();
+        if (!adminEmail || adminEmail.startsWith("YOUR_")) {
+            throw new Error("Admin email is not configured in js/supabase-config.js");
+        }
+
+        const userInput = document.getElementById("username").value.trim();
+        const passInput = document.getElementById("password").value;
+
+        let emailToAuth = adminEmail;
+        if (userInput.includes("@")) {
+            if (userInput.toLowerCase() !== adminEmail.toLowerCase()) {
+                throw new Error("Unauthorized: Only the registered owner can access this dashboard.");
+            }
+            emailToAuth = userInput;
+        }
+
+        const sb = getSupabaseClient();
+        const { data, error: authError } = await sb.auth.signInWithPassword({
+            email: emailToAuth,
+            password: passInput
+        });
+
+        if (authError) throw authError;
+
+        if (data.user && data.user.email.toLowerCase() !== adminEmail.toLowerCase()) {
+            await sb.auth.signOut();
+            throw new Error("Access restricted: not an authorized owner account.");
+        }
+
+        location.href = "dashboard.html";
+    } catch (errObj) {
+        err.textContent = errObj.message || "Login failed. Please check your credentials.";
+        err.style.display = "block";
+    } finally {
+        btn.disabled = false;
+        btn.textContent = "Login";
+    }
+};
+</script>
+</body>
+</html>
