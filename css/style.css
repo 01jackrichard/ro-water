@@ -433,320 +433,210 @@ select {
 /* FOOTER */
 
 /* ==========================================================================
-   FOOTER (REDESIGNED & ORGANIZED)
+   FLOATING CARD FOOTER (INSPIRED BY REFERENCE DESIGN)
    ========================================================================== */
 
-.footer {
-    background: #061522;
-    color: #94a9ba;
-    padding-top: 75px;
-    font-size: 14.5px;
-    border-top: 1px solid rgba(255, 255, 255, 0.06);
+.footer-section {
+    background: #f4f8fb;
+    padding: 50px 0 70px;
     position: relative;
+    overflow: hidden;
 }
 
-.footer-grid {
+.footer-card-wrapper {
+    position: relative;
+    z-index: 2;
+}
+
+.footer-card {
+    background: #ffffff;
+    border: 1px solid #e1ebf2;
+    border-radius: 28px;
+    padding: 48px 48px 28px;
+    box-shadow: 0 10px 40px rgba(7, 26, 43, 0.04);
+    position: relative;
+    z-index: 3;
+}
+
+.footer-card-grid {
     display: grid;
-    grid-template-columns: 1.35fr 0.95fr 1.05fr 1.45fr;
+    grid-template-columns: 1.8fr 1fr 1fr 1fr;
     gap: 48px;
-    padding-bottom: 60px;
+    margin-bottom: 36px;
     align-items: start;
 }
 
 /* Brand Column */
-.footer-about .footer-logo {
+.footer-card-brand .footer-logo {
     display: inline-flex;
     align-items: center;
     gap: 10px;
     font-size: 22px;
     font-weight: 800;
-    color: #ffffff;
-    margin-bottom: 16px;
+    color: var(--dark);
+    text-decoration: none;
+    margin-bottom: 14px;
+}
+
+.footer-tagline {
+    color: #64748b;
+    font-size: 14px;
+    line-height: 1.65;
+    max-width: 360px;
+    margin-bottom: 22px;
+}
+
+.footer-social-row {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.social-icon-btn {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    background: #f1f5f9;
+    color: #475569;
+    display: grid;
+    place-items: center;
+    font-size: 17px;
+    transition: all 0.2s ease;
     text-decoration: none;
 }
 
-.footer-bio {
-    color: #94a9ba;
-    font-size: 14px;
-    line-height: 1.7;
-    margin-bottom: 20px;
-}
-
-.footer-badges {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    align-items: flex-start;
-}
-
-.trust-pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 7px;
-    padding: 6px 14px;
-    background: rgba(8, 127, 219, 0.15);
-    border: 1px solid rgba(8, 127, 219, 0.3);
-    border-radius: 20px;
-    color: #38bdf8;
-    font-size: 12.5px;
-    font-weight: 600;
-}
-
-.trust-pill-time {
-    display: inline-flex;
-    align-items: center;
-    gap: 7px;
-    padding: 6px 14px;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 20px;
-    color: #cbd5e1;
-    font-size: 12px;
-    font-weight: 500;
-}
-
-/* Headings */
-.footer-heading {
-    color: #ffffff;
-    font-size: 15px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    margin-bottom: 20px;
-    position: relative;
-    padding-bottom: 10px;
-}
-
-.footer-heading::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 28px;
-    height: 2px;
+.social-icon-btn:hover {
     background: var(--primary);
-    border-radius: 2px;
+    color: #ffffff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(8, 127, 219, 0.25);
 }
 
-/* Nav Lists */
-.footer-nav-list {
+.social-icon-btn.social-icon-wa:hover {
+    background: #25d366;
+    color: #ffffff;
+    box-shadow: 0 4px 12px rgba(37, 211, 102, 0.25);
+}
+
+/* Navigation Columns */
+.footer-col-title {
+    font-size: 14.5px;
+    font-weight: 700;
+    color: var(--dark);
+    margin-bottom: 16px;
+    letter-spacing: -0.01em;
+}
+
+.footer-col-links {
     list-style: none;
     padding: 0;
     margin: 0;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 11px;
 }
 
-.footer-nav-list li a {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    color: #94a9ba;
+.footer-col-links li a {
+    color: #64748b;
+    font-size: 13.5px;
+    font-weight: 500;
     text-decoration: none;
-    font-size: 14px;
-    transition: all 0.2s ease;
+    transition: color 0.2s ease, transform 0.2s ease;
+    display: inline-block;
 }
 
-.footer-nav-list li a i {
-    font-size: 14px;
-    color: rgba(255, 255, 255, 0.3);
-    transition: transform 0.2s ease, color 0.2s ease;
-}
-
-.footer-nav-list li a:hover {
-    color: #38bdf8;
-    transform: translateX(4px);
-}
-
-.footer-nav-list li a:hover i {
-    color: #38bdf8;
+.footer-col-links li a:hover {
+    color: var(--primary);
     transform: translateX(2px);
 }
 
-/* Contact Cards (Col 4) */
-.footer-contact-cards {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
+/* Divider Line */
+.footer-divider {
+    height: 1px;
+    background: #eef3f7;
+    width: 100%;
+    margin-bottom: 22px;
 }
 
-.contact-card {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    padding: 10px 14px;
-    background: rgba(255, 255, 255, 0.035);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 10px;
-    text-decoration: none;
-    transition: all 0.25s ease;
-}
-
-.contact-card:hover {
-    background: rgba(255, 255, 255, 0.07);
-    border-color: rgba(56, 189, 248, 0.4);
-    transform: translateY(-2px);
-}
-
-.contact-card-icon {
-    width: 36px;
-    height: 36px;
-    border-radius: 8px;
-    display: grid;
-    place-items: center;
-    font-size: 17px;
-    flex-shrink: 0;
-}
-
-.icon-phone {
-    background: rgba(8, 127, 219, 0.2);
-    color: #38bdf8;
-}
-
-.icon-wa {
-    background: rgba(37, 211, 102, 0.2);
-    color: #25d366;
-}
-
-.contact-card-wa:hover {
-    border-color: rgba(37, 211, 102, 0.4);
-}
-
-.icon-email {
-    background: rgba(168, 85, 247, 0.2);
-    color: #c084fc;
-}
-
-.icon-location {
-    background: rgba(239, 68, 68, 0.2);
-    color: #f87171;
-}
-
-.contact-card-info {
-    display: flex;
-    flex-direction: column;
-    min-width: 0;
-}
-
-.contact-card-label {
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: #64748b;
-    font-weight: 600;
-}
-
-.contact-card-value {
-    color: #f1f5f9;
-    font-size: 13.5px;
-    font-weight: 600;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.contact-card-arrow {
-    margin-left: auto;
-    color: #64748b;
-    font-size: 14px;
-    transition: all 0.2s ease;
-}
-
-.contact-card:hover .contact-card-arrow {
-    color: #25d366;
-    transform: translate(2px, -2px);
-}
-
-/* Location Card */
-.contact-location-card {
-    padding: 12px 14px;
-    background: rgba(255, 255, 255, 0.035);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 10px;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-
-.location-header {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.location-name {
-    display: block;
-    color: #ffffff;
-    font-size: 13px;
-    font-weight: 700;
-    letter-spacing: 0.02em;
-}
-
-.location-address {
-    color: #94a9ba;
-    font-size: 12.5px;
-    line-height: 1.5;
-    margin: 0;
-}
-
-.location-map-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    color: #38bdf8;
-    text-decoration: none;
-    font-size: 12px;
-    font-weight: 600;
-    padding: 4px 0;
-    transition: all 0.2s ease;
-}
-
-.location-map-btn:hover {
-    color: #ffffff;
-    transform: translateX(3px);
-}
-
-/* Footer Bottom Bar */
-.footer-bottom {
-    border-top: 1px solid rgba(255, 255, 255, 0.08);
-    padding: 22px 0;
-    background: #040e17;
-}
-
-.footer-bottom-flex {
+/* Card Bottom */
+.footer-card-bottom {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 20px;
     flex-wrap: wrap;
+    gap: 16px;
 }
 
-.footer-copy {
-    color: #718596;
+.footer-copyright {
+    color: #94a3b8;
     font-size: 13px;
     margin: 0;
 }
 
-.owner-login-btn {
+.footer-owner-link {
+    color: #64748b;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    padding: 6px 14px;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 5px 12px;
     border-radius: 20px;
-    color: #94a9ba;
-    font-size: 12px;
-    font-weight: 600;
-    text-decoration: none;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
     transition: all 0.2s ease;
 }
 
-.owner-login-btn:hover {
-    background: rgba(8, 127, 219, 0.2);
+.footer-owner-link:hover {
+    color: var(--primary);
     border-color: var(--primary);
-    color: #ffffff;
+    background: #eff6ff;
+}
+
+/* Watermark Text */
+.footer-watermark {
+    position: absolute;
+    bottom: -25px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: clamp(48px, 9.5vw, 130px);
+    font-weight: 900;
+    color: rgba(8, 127, 219, 0.04);
+    white-space: nowrap;
+    pointer-events: none;
+    z-index: 1;
+    letter-spacing: -0.02em;
+    user-select: none;
+}
+
+/* Responsive Footer */
+@media (max-width: 992px) {
+    .footer-card-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 32px;
+    }
+
+    .footer-card {
+        padding: 36px 32px 24px;
+    }
+}
+
+@media (max-width: 640px) {
+    .footer-card-grid {
+        grid-template-columns: 1fr;
+        gap: 28px;
+    }
+
+    .footer-card {
+        padding: 28px 20px 20px;
+        border-radius: 20px;
+    }
+
+    .footer-card-bottom {
+        flex-direction: column;
+        text-align: center;
+    }
 }
 
 
@@ -813,10 +703,6 @@ select {
         gap: 35px;
     }
 
-    .footer-grid {
-        grid-template-columns: 1fr 1fr;
-    }
-
     .cta-box {
         flex-direction: column;
         align-items: flex-start;
@@ -838,10 +724,6 @@ select {
     }
 
     .stats-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .footer-grid {
         grid-template-columns: 1fr;
     }
 
