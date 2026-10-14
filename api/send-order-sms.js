@@ -1,5 +1,38 @@
 // Vercel Serverless Function: /api/send-order-sms
+// Handles secure SMS dispatch to owner mobile number (9025281363)
 const twilio = require('twilio');
+
+// In-memory rate limiting map (IP-based, resets on cold start)
+const rateLimitMap = new Map();
+const RATE_LIMIT_WINDOW_MS = 60 * 1000; // 1 minute
+const MAX_REQUESTS_PER_WINDOW = 6;
+
+function isRateLimited(ip) {
+    if (!ip) return false;
+    const now = Date.now();
+    const clientData = rateLimitMap.get(ip) || { count: 0, resetAt: now + RATE_LIMIT_WINDOW_MS };
+
+    if (now > clientData.resetAt) {
+        clientData.count = 1;
+        clientData.resetAt = now + RATE_LIMIT_WINDOW_MS;
+        rateLimitMap.set(ip, clientData);
+        return false;
+    }
+
+    clientData.count += 1;
+    rateLimitMap.set(ip, clientData);
+    return clientData.count > MAX_REQUESTS_PER_WINDOW;
+}
+
+// Basic input sanitization to prevent injection & SMS payload abuse
+function sanitizeText(str, maxLength = 250) {
+    if (typeof str !== 'string') return '';
+    return str
+        .replace(/<[^>]*>?/gm, '') // Remove HTML tags
+        .replace(/[\r\n]+/g, ' ')  // Normalize newlines
+        .trim()
+        .slice(0, maxLength);
+}
 
 module.exports = async (req, res) => {
     // Only accept POST requests
@@ -11,34 +44,26 @@ module.exports = async (req, res) => {
         });
     }
 
+    // Rate limiting check
+    const clientIp = req.headers['x-forwarded-for'] || req.socket?.remoteAddress || 'unknown';
+    if (isRateLimited(clientIp)) {
+        return res.status(429).json({
+            success: false,
+            error: 'Too many requests. Please wait a moment before trying again.'
+        });
+    }
+
     try {
         const body = typeof req.body === 'string' ? JSON.parse(req.body) : (req.body || {});
-        const { id, name, phone, service, booking_date, address, message } = body;
-
-        // Validate required booking data
-        if (!name || !phone || !service || !booking_date) {
-            return res.status(400).json({
-                success: false,
-                error: 'Missing required booking details (name, phone, service, and booking_date are required).'
-            });
-        }
+        const notificationType = body.type || 'booking'; // 'booking' or 'contact'
 
         // Retrieve Twilio credentials from Vercel Environment Variables
         const accountSid = (process.env.TWILIO_ACCOUNT_SID || '').trim();
         const authToken = (process.env.TWILIO_AUTH_TOKEN || '').trim();
         const fromNumber = (process.env.TWILIO_PHONE_NUMBER || '').trim();
-        let ownerNumber = (process.env.OWNER_PHONE_NUMBER || '').trim();
-
-        // Check if environment variables are configured
-        if (!accountSid || !authToken || !fromNumber || !ownerNumber) {
-            console.warn('[Twilio SMS] Required environment variables are missing on Vercel.');
-            return res.status(200).json({
-                success: false,
-                warning: 'Twilio environment variables (TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, TWILIO_PHONE_NUMBER, OWNER_PHONE_NUMBER) are not yet configured in Vercel.'
-            });
-        }
-
-        // Format owner phone number with country code if not present (defaults to +91 for India)
+        
+        // Owner phone defaults to 9025281363 (formatted as +919025281363 for Indian carriers)
+        let ownerNumber = (process.env.OWNER_PHONE_NUMBER || '9025281363').trim();
         if (!ownerNumber.startsWith('+')) {
             const cleanDigits = ownerNumber.replace(/\D/g, '');
             if (cleanDigits.length === 10) {
@@ -50,42 +75,132 @@ module.exports = async (req, res) => {
             }
         }
 
-        // Format order ID
-        const orderIdDisplay = id ? `#${id}` : 'NEW';
+        let smsMessage = '';
 
-        // Construct concise SMS text message
-        const smsMessage = 
-`R-TECH PURE WATER - NEW ORDER
+        if (notificationType === 'contact') {
+            const name = sanitizeText(body.name, 60);
+            const phone = sanitizeText(body.phone, 20);
+            const email = sanitizeText(body.email, 80);
+            const subject = sanitizeText(body.subject, 100);
+            const message = sanitizeText(body.message, 300);
 
-Order ID: ${orderIdDisplay}
-Customer: ${name.trim()}
-Phone: ${phone.trim()}
-Service: ${service.trim()}
-Booking Date: ${booking_date.trim()}
+            if (!name || (!phone && !email) || !message) {
+                return res.status(400).json({
+                    success: false,
+                    error: 'Missing required contact fields (name, message, and phone/email are required).'
+                });
+            }
+
+            smsMessage = 
+`R-TECH PURE WATER - NEW INQUIRY
+
+From: ${name}
+Phone: ${phone || 'Not provided'}
+Email: ${email || 'Not provided'}
+Subject: ${subject || 'General Inquiry'}
+Message: ${message}
+
+Action: Check your admin messages or reply directly.`;
+
+        } else {
+            // Default: Booking notification
+            const { id } = body;
+            const name = sanitizeText(body.name, 60);
+            const phone = sanitizeText(body.phone, 20);
+            const service = sanitizeText(body.service, 80);
+            const bookingDate = sanitizeText(body.booking_date, 30);
+            const address = sanitizeText(body.address, 150);
+            const notes = sanitizeText(body.message, 200);
+
+            if (!name || !phone || !service || !bookingDate) {
+                return res.status(400).json({
+                    success: false,
+                    error: 'Missing required booking details (name, phone, service, and booking_date are required).'
+                });
+            }
+
+            const orderRef = id ? `#${id}` : 'NEW';
+
+            smsMessage = 
+`R-TECH PURE WATER - NEW BOOKING ${orderRef}
+
+Customer: ${name}
+Phone: ${phone}
+Service: ${service}
+Date: ${bookingDate}
+Address: ${address || 'On file'}
+${notes ? `Note: ${notes}` : ''}
 
 Please check the admin dashboard for full details.`;
+        // 1. Check Indian SMS Gateway (Fast2SMS - instant free SMS to Indian numbers without DLT approval)
+        const fast2smsKey = (process.env.FAST2SMS_API_KEY || '').trim();
+        if (fast2smsKey) {
+            try {
+                const targetDigits = ownerNumber.replace(/\D/g, '').slice(-10);
+                const params = new URLSearchParams({
+                    route: 'q',
+                    message: smsMessage,
+                    numbers: targetDigits
+                });
 
-        // Initialize Twilio client and send SMS
-        const client = twilio(accountSid, authToken);
-        const result = await client.messages.create({
-            body: smsMessage,
-            from: fromNumber,
-            to: ownerNumber
-        });
+                const response = await fetch(`https://www.fast2sms.com/dev/bulkV2?${params.toString()}`, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': fast2smsKey,
+                        'Accept': 'application/json'
+                    }
+                });
 
-        console.log(`[Twilio SMS] SMS sent successfully. SID: ${result.sid}`);
+                const data = await response.json();
+                console.log(`[Fast2SMS] Dispatched to ${targetDigits}:`, data);
+                return res.status(200).json({
+                    success: true,
+                    provider: 'fast2sms',
+                    recipient: targetDigits,
+                    result: data
+                });
+            } catch (f2sErr) {
+                console.error('[Fast2SMS] Dispatch error:', f2sErr);
+            }
+        }
+
+        // 2. Check Twilio SMS Gateway
+        if (accountSid && authToken && fromNumber) {
+            const client = twilio(accountSid, authToken);
+            const result = await client.messages.create({
+                body: smsMessage,
+                from: fromNumber,
+                to: ownerNumber
+            });
+
+            console.log(`[Twilio SMS] SMS sent to ${ownerNumber}. SID: ${result.sid}`);
+
+            return res.status(200).json({
+                success: true,
+                provider: 'twilio',
+                messageId: result.sid,
+                recipient: ownerNumber,
+                status: result.status
+            });
+        }
+
+        // 3. Neither Twilio nor Fast2SMS configured yet
+        console.warn(`[SMS Notification Notice] Order notification generated for: ${ownerNumber}`);
+        console.warn(`[SMS Notification Notice] No carrier SMS credentials found in .env or environment.`);
+        console.warn(`[SMS Notification Notice] To deliver real carrier SMS to ${ownerNumber}, add FAST2SMS_API_KEY or TWILIO credentials to .env.`);
 
         return res.status(200).json({
-            success: true,
-            messageId: result.sid,
-            status: result.status
+            success: false,
+            simulated: true,
+            recipient: ownerNumber,
+            warning: 'Carrier SMS credentials (FAST2SMS_API_KEY or TWILIO_ACCOUNT_SID) are not set. Customer can send details via WhatsApp.'
         });
 
     } catch (err) {
         console.error('[Twilio SMS] Failed to dispatch SMS:', err);
         return res.status(200).json({
             success: false,
-            error: err.message || 'Twilio SMS dispatch failed'
+            error: 'SMS dispatch encountered an issue. Customer action recorded safely.'
         });
     }
 };

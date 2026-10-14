@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "private": true,
   "description": "R-Tech Pure Water - RO Purification Solutions",
+  "scripts": {
+    "dev": "node dev-server.js",
+    "start": "node dev-server.js"
+  },
   "dependencies": {
     "twilio": "^5.13.1"
   }

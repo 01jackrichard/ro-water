@@ -41,7 +41,8 @@ function esc(v) {
         .replace(/</g, "&lt;")
         .replace(/>/g, "&gt;")
         .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
+        .replace(/'/g, "&#039;")
+        .replace(/`/g, "&#96;");
 }
 
 function row(cells) {
