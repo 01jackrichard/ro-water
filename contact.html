@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="R-Tech Pure Water - Pure and safe drinking water solutions">
+<meta name="description" content="Contact R-Tech Pure Water in Tirupathur for RO purifier installation, repair, and water testing.">
 <title>Contact Us - R-Tech Pure Water</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@4.6.0/fonts/remixicon.css">
 <link rel="stylesheet" href="css/style.css">
@@ -11,105 +11,190 @@
 <body>
 <div id="site-header"></div>
 
-
-
-<section class="section">
-
+<section class="section contact-section">
     <div class="container">
-
         <div class="section-heading">
-
-            <span>CONTACT US</span>
-
+            <span>GET IN TOUCH</span>
             <h2>
                 Let's Talk About
                 <span>Your Water Needs</span>
             </h2>
-
             <p>
-                Have a question about our RO services?
-                Send us a message.
+                Have questions about our RO water purification systems or require urgent service? Call or message us directly at <strong>+91 9025281363</strong>.
             </p>
-
         </div>
 
+        <div class="contact-layout-grid">
+            <!-- Contact Info Cards -->
+            <aside class="contact-info-panel">
+                <div class="contact-card primary-contact-card">
+                    <div class="contact-card-icon">
+                        <i class="ri-phone-fill"></i>
+                    </div>
+                    <div>
+                        <h3>Direct Call</h3>
+                        <p>Speak directly with our service technician</p>
+                        <a href="tel:+919025281363" class="contact-link-highlight">
+                            +91 90252 81363
+                        </a>
+                    </div>
+                </div>
 
-        <form class="booking-form"
-              id="contactForm"
-              novalidate>
+                <div class="contact-card whatsapp-contact-card">
+                    <div class="contact-card-icon whatsapp-icon-bg">
+                        <i class="ri-whatsapp-fill"></i>
+                    </div>
+                    <div>
+                        <h3>WhatsApp Inquiry</h3>
+                        <p>Instant answers & photo sharing</p>
+                        <a href="https://wa.me/919025281363?text=Hello%20R-Tech%20Pure%20Water,%20I%20have%20an%20inquiry%20regarding%20RO%20water%20service." target="_blank" rel="noopener noreferrer" class="contact-link-highlight whatsapp-color">
+                            Chat on WhatsApp (9025281363)
+                        </a>
+                    </div>
+                </div>
 
-            <div class="form-group">
+                <div class="contact-card">
+                    <div class="contact-card-icon">
+                        <i class="ri-mail-fill"></i>
+                    </div>
+                    <div>
+                        <h3>Email Inquiries</h3>
+                        <p>For commercial proposals & quotations</p>
+                        <a href="mailto:thavasikutti89@gmail.com" class="contact-link-highlight">
+                            thavasikutti89@gmail.com
+                        </a>
+                    </div>
+                </div>
 
-                <label for="name">
-                    Name
-                </label>
+                <div class="contact-card">
+                    <div class="contact-card-icon">
+                        <i class="ri-map-pin-2-fill"></i>
+                    </div>
+                    <div>
+                        <h3>Service Center Location</h3>
+                        <p>
+                            R TECH PURE WATER<br>
+                            Bus Stop: Chinnakadai, Tiruvannamalai Road,<br>
+                            Tirupathur, Tamil Nadu - 635602
+                        </p>
+                        <a href="https://maps.app.goo.gl/uCsNtSsbRwa6mUzb9?g_st=aw" target="_blank" rel="noopener noreferrer" class="contact-link-highlight">
+                            View on Google Maps →
+                        </a>
+                    </div>
+                </div>
+            </aside>
 
-                <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    required>
+            <!-- Interactive Contact Form -->
+            <div class="contact-form-wrapper">
+                <div id="contactAlertBox" class="form-alert-banner" style="display:none;" role="alert"></div>
 
+                <!-- Success Box (Replaces Form when sent) -->
+                <div id="contactSuccessCard" class="contact-success-card" style="display:none;">
+                    <div class="success-icon-ring" style="width:70px; height:70px; font-size:36px; margin-bottom:14px;">
+                        <i class="ri-checkbox-circle-fill"></i>
+                    </div>
+                    <h2>Thank You! Your Message is Received.</h2>
+                    <p id="successCustomerMessage">Our team has been notified at <strong>+91 9025281363</strong> and will reply shortly.</p>
+                    
+                    <div style="margin: 24px 0;">
+                        <a href="#" id="contactWaFollowup" class="btn whatsapp-btn" target="_blank" rel="noopener noreferrer" style="font-size:15px; padding:12px 22px;">
+                            <i class="ri-whatsapp-fill"></i> Continue Conversation on WhatsApp
+                        </a>
+                    </div>
+
+                    <button type="button" id="btnSendAnother" class="btn secondary-btn" style="padding:10px 18px; font-size:14px;">
+                        Send Another Message
+                    </button>
+                </div>
+
+                <form class="booking-form contact-form" id="contactForm" novalidate>
+                    <!-- Honeypot anti-spam check -->
+                    <div style="display:none;" aria-hidden="true">
+                        <input type="text" name="_hp_contact" id="_hp_contact" tabindex="-1" autocomplete="off">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="name">
+                            <i class="ri-user-line"></i> Full Name <span class="req">*</span>
+                        </label>
+                        <input
+                            type="text"
+                            id="name"
+                            name="name"
+                            required
+                            minlength="2"
+                            maxlength="80"
+                            placeholder="Enter your name">
+                    </div>
+
+                    <div class="form-grid" style="margin-bottom:0;">
+                        <div class="form-group">
+                            <label for="phone">
+                                <i class="ri-phone-line"></i> Mobile Number <span class="req">*</span>
+                            </label>
+                            <input
+                                type="tel"
+                                id="phone"
+                                name="phone"
+                                required
+                                pattern="^[0-9+\s-]{10,15}$"
+                                maxlength="15"
+                                placeholder="e.g. 9025281363">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">
+                                <i class="ri-mail-line"></i> Email Address <span class="req">*</span>
+                            </label>
+                            <input
+                                type="email"
+                                id="email"
+                                name="email"
+                                required
+                                maxlength="100"
+                                placeholder="e.g. yourname@gmail.com">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="subject">
+                            <i class="ri-bookmark-line"></i> Subject <span class="req">*</span>
+                        </label>
+                        <input
+                            type="text"
+                            id="subject"
+                            name="subject"
+                            required
+                            minlength="3"
+                            maxlength="150"
+                            placeholder="e.g. Inquiry about Commercial RO Purifier">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="message">
+                            <i class="ri-message-3-line"></i> Message <span class="req">*</span>
+                        </label>
+                        <textarea
+                            id="message"
+                            name="message"
+                            rows="5"
+                            required
+                            minlength="5"
+                            maxlength="1000"
+                            placeholder="Write your message or question here..."></textarea>
+                    </div>
+
+                    <div class="form-submit-row">
+                        <button type="submit" class="btn primary-btn" id="submitContactBtn">
+                            <span class="btn-text">Send Message</span>
+                            <i class="ri-send-plane-line btn-icon"></i>
+                        </button>
+                    </div>
+                </form>
             </div>
-
-
-            <div class="form-group">
-
-                <label for="email">
-                    Email
-                </label>
-
-                <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    required>
-
-            </div>
-
-
-            <div class="form-group">
-
-                <label for="subject">
-                    Subject
-                </label>
-
-                <input
-                    type="text"
-                    id="subject"
-                    name="subject"
-                    required>
-
-            </div>
-
-
-            <div class="form-group">
-
-                <label for="message">
-                    Message
-                </label>
-
-                <textarea
-                    id="message"
-                    name="message"
-                    rows="6"
-                    required></textarea>
-
-            </div>
-
-
-            <button type="submit" class="btn primary-btn">
-                Send Message
-                <i class="ri-send-plane-line"></i>
-            </button>
-
-        </form>
-
+        </div>
     </div>
-
 </section>
-
-
 
 <div id="site-footer"></div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -120,4 +205,3 @@
 <script src="js/contact.js"></script>
 </body>
 </html>
-

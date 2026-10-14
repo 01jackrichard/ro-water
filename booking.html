@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="R-Tech Pure Water - Pure and safe drinking water solutions">
+<meta name="description" content="Book RO service, installation, and filter replacement in Tirupathur with R-Tech Pure Water.">
 <title>Book Service - R-Tech Pure Water</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@4.6.0/fonts/remixicon.css">
 <link rel="stylesheet" href="css/style.css">
@@ -11,176 +11,135 @@
 <body>
 <div id="site-header"></div>
 
-
 <section class="section">
-
     <div class="container">
-
         <div class="section-heading">
-
             <span>BOOK A SERVICE</span>
-
             <h2>
                 Schedule Your
                 <span>RO Service</span>
             </h2>
-
             <p>
-                Fill in your details and our service team
-                will contact you.
+                Fill in your details below and our service team will confirm your appointment. Direct inquiries to <strong>+91 9025281363</strong>.
             </p>
-
         </div>
 
+        <!-- Inline error container if needed -->
+        <div id="bookingAlertBox" class="form-alert-banner" style="display:none;" role="alert"></div>
 
-        <form class="booking-form"
-              id="bookingForm"
-              novalidate>
+        <form class="booking-form" id="bookingForm" novalidate>
+            <!-- Honeypot anti-spam check (hidden from real users) -->
+            <div style="display:none;" aria-hidden="true">
+                <input type="text" name="_hp_check" id="_hp_check" tabindex="-1" autocomplete="off">
+            </div>
 
             <div class="form-grid">
-
                 <div class="form-group">
-
                     <label for="name">
-                        Full Name
+                        <i class="ri-user-line"></i> Full Name <span class="req">*</span>
                     </label>
-
                     <input
                         type="text"
                         id="name"
                         name="name"
                         required
-                        placeholder="Enter your name">
-
+                        minlength="2"
+                        maxlength="80"
+                        placeholder="e.g. Ramesh Kumar">
                 </div>
 
-
                 <div class="form-group">
-
                     <label for="phone">
-                        Phone Number
+                        <i class="ri-phone-line"></i> Phone Number <span class="req">*</span>
                     </label>
-
                     <input
                         type="tel"
                         id="phone"
                         name="phone"
                         required
-                        placeholder="Enter phone number">
-
+                        pattern="^[0-9+\s-]{10,15}$"
+                        maxlength="15"
+                        placeholder="e.g. 9025281363">
+                    <small class="field-hint">10-digit mobile number</small>
                 </div>
 
-
                 <div class="form-group">
-
                     <label for="email">
-                        Email
+                        <i class="ri-mail-line"></i> Email Address <span class="req">*</span>
                     </label>
-
                     <input
                         type="email"
                         id="email"
                         name="email"
                         required
-                        placeholder="Enter email">
-
+                        maxlength="100"
+                        placeholder="e.g. ramesh@gmail.com">
                 </div>
 
-
                 <div class="form-group">
-
                     <label for="service">
-                        Service
+                        <i class="ri-tools-line"></i> Service Required <span class="req">*</span>
                     </label>
-
-                    <select id="service"
-                            name="service"
-                            required>
-
-                        <option value="">
-                            Select Service
-                        </option>
-
-                        <option value="RO Installation">
-                            RO Installation
-                        </option>
-
-                        <option value="RO Repair">
-                            RO Repair
-                        </option>
-
-                        <option value="Filter Replacement">
-                            Filter Replacement
-                        </option>
-
-                        <option value="Annual Maintenance">
-                            Annual Maintenance
-                        </option>
-
+                    <select id="service" name="service" required>
+                        <option value="">Select Service</option>
+                        <option value="RO Installation">RO Installation</option>
+                        <option value="RO Repair">RO Repair & Servicing</option>
+                        <option value="Filter Replacement">Filter Replacement</option>
+                        <option value="Annual Maintenance">Annual Maintenance (AMC)</option>
+                        <option value="Commercial RO">Commercial RO Setup</option>
                     </select>
-
                 </div>
 
-
                 <div class="form-group">
-
                     <label for="date">
-                        Preferred Date
+                        <i class="ri-calendar-line"></i> Preferred Service Date <span class="req">*</span>
                     </label>
-
                     <input
                         type="date"
                         id="date"
                         name="booking_date"
                         required>
-
                 </div>
 
-
                 <div class="form-group">
-
                     <label for="address">
-                        Address
+                        <i class="ri-map-pin-line"></i> Service Address <span class="req">*</span>
                     </label>
-
                     <input
                         type="text"
                         id="address"
                         name="address"
                         required
-                        placeholder="Enter address">
-
+                        minlength="5"
+                        maxlength="250"
+                        placeholder="House no., street, area in Tirupathur">
                 </div>
-
             </div>
 
-
             <div class="form-group">
-
                 <label for="message">
-                    Additional Message
+                    <i class="ri-chat-3-line"></i> Problem Description / Special Instructions
                 </label>
-
                 <textarea
                     id="message"
                     name="message"
-                    rows="5"
-                    placeholder="Describe your RO problem"></textarea>
-
+                    rows="4"
+                    maxlength="500"
+                    placeholder="Describe any specific issues (e.g., slow water flow, TDS problem, unusual sound)..."></textarea>
             </div>
 
-
-            <button type="submit" class="btn primary-btn">
-                Submit Booking
-                <i class="ri-send-plane-line"></i>
-            </button>
-
+            <div class="form-submit-row">
+                <button type="submit" class="btn primary-btn" id="submitBookingBtn">
+                    <span class="btn-text">Confirm & Schedule Booking</span>
+                    <i class="ri-arrow-right-line btn-icon"></i>
+                </button>
+                <a href="https://wa.me/919025281363?text=Hi%20R-Tech%20Pure%20Water,%20I%20want%20to%20book%20an%20urgent%20RO%20service." target="_blank" rel="noopener noreferrer" class="whatsapp-btn-alt">
+                    <i class="ri-whatsapp-line"></i> Book via WhatsApp Instead
+                </a>
+            </div>
         </form>
-
     </div>
-
 </section>
-
 
 <div id="site-footer"></div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -191,4 +150,3 @@
 <script src="js/booking.js"></script>
 </body>
 </html>
-
