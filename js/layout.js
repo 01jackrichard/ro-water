@@ -44,62 +44,110 @@
         </div>
     </header>`;
 
-    // Footer with verified owner phone 9025281363
+    // Footer with verified owner phone 9025281363 (Organized & Clean)
     const footer = `
     <footer class="footer">
         <div class="container footer-grid">
+            <!-- Col 1: Brand & Bio -->
             <div class="footer-about">
-                <a href="index.html" class="logo footer-logo">
+                <a href="index.html" class="logo footer-logo" title="R-Tech Pure Water">
                     <span class="logo-icon"><i class="ri-drop-fill"></i></span>
                     R-Tech Pure <span>Water</span>
                 </a>
-                <p>Providing premium, certified RO water purification, installation, filter replacement, and annual maintenance solutions across Tirupathur and surrounding regions.</p>
-                <div class="trust-pill">
-                    <i class="ri-shield-star-fill"></i> Verified Water Specialist
-                </div>
-            </div>
-            <div>
-                <h3>Quick Links</h3>
-                <a href="index.html">Home</a>
-                <a href="about.html">About Us</a>
-                <a href="services.html">Our Services</a>
-                <a href="products.html">Purifier Products</a>
-                <a href="owner-details.html">Owner Profile</a>
-            </div>
-            <div>
-                <h3>Our Services</h3>
-                <a href="booking.html?service=RO%20Installation">RO Installation</a>
-                <a href="booking.html?service=RO%20Repair">RO Repair & Fix</a>
-                <a href="booking.html?service=Filter%20Replacement">Filter Replacement</a>
-                <a href="booking.html?service=Annual%20Maintenance">Annual Maintenance (AMC)</a>
-                <a href="booking.html?service=Commercial%20RO">Commercial RO Setup</a>
-            </div>
-            <div>
-                <h3>Contact & Support</h3>
-                <div class="footer-contact">
-                    <a href="tel:${OWNER_PHONE_TEL}" class="footer-call-btn">
-                        <i class="ri-phone-fill"></i> 📞 ${OWNER_PHONE_DISPLAY}
-                    </a>
-                    <a href="${WHATSAPP_URL}" target="_blank" rel="noopener noreferrer" class="whatsapp-btn">
-                        <i class="ri-whatsapp-fill"></i> 💬 WhatsApp (${OWNER_PHONE_RAW})
-                    </a>
-                    <a href="mailto:thavasikutti89@gmail.com" class="email-link">
-                        <i class="ri-mail-line"></i> thavasikutti89@gmail.com
-                    </a>
-                    <a href="https://maps.app.goo.gl/uCsNtSsbRwa6mUzb9?g_st=aw" target="_blank" rel="noopener noreferrer" class="maps-link">
-                        <i class="ri-map-pin-2-fill"></i> 📍 View on Google Maps
-                    </a>
-                </div>
-                <p class="footer-address">
-                    <i class="ri-building-line"></i> <strong>R TECH PURE WATER</strong><br>
-                    Bus Stop: Chinnakadai,<br>
-                    Tiruvannamalai Road,<br>
-                    Tirupathur, Tamil Nadu - 635602
+                <p class="footer-bio">
+                    Providing certified RO water purification, genuine filter replacements, precision TDS testing, and express maintenance solutions across Tirupathur and surrounding regions.
                 </p>
+                <div class="footer-badges">
+                    <span class="trust-pill"><i class="ri-shield-check-fill"></i> Verified Water Specialist</span>
+                    <span class="trust-pill-time"><i class="ri-time-line"></i> Daily: 8:00 AM – 9:00 PM</span>
+                </div>
+            </div>
+
+            <!-- Col 2: Quick Links -->
+            <div class="footer-links-col">
+                <h3 class="footer-heading">Quick Links</h3>
+                <ul class="footer-nav-list">
+                    <li><a href="index.html"><i class="ri-arrow-right-s-line"></i> Home</a></li>
+                    <li><a href="about.html"><i class="ri-arrow-right-s-line"></i> About Us</a></li>
+                    <li><a href="services.html"><i class="ri-arrow-right-s-line"></i> Our Services</a></li>
+                    <li><a href="products.html"><i class="ri-arrow-right-s-line"></i> Purifier Products</a></li>
+                    <li><a href="owner-details.html"><i class="ri-arrow-right-s-line"></i> Owner Profile</a></li>
+                    <li><a href="booking.html"><i class="ri-arrow-right-s-line"></i> Book Service</a></li>
+                </ul>
+            </div>
+
+            <!-- Col 3: Services -->
+            <div class="footer-links-col">
+                <h3 class="footer-heading">Our Services</h3>
+                <ul class="footer-nav-list">
+                    <li><a href="booking.html?service=RO%20Installation"><i class="ri-arrow-right-s-line"></i> RO Installation</a></li>
+                    <li><a href="booking.html?service=RO%20Repair"><i class="ri-arrow-right-s-line"></i> RO Repair & Fix</a></li>
+                    <li><a href="booking.html?service=Filter%20Replacement"><i class="ri-arrow-right-s-line"></i> Filter Replacement</a></li>
+                    <li><a href="booking.html?service=Annual%20Maintenance"><i class="ri-arrow-right-s-line"></i> Annual Maintenance (AMC)</a></li>
+                    <li><a href="booking.html?service=Commercial%20RO"><i class="ri-arrow-right-s-line"></i> Commercial RO Setup</a></li>
+                </ul>
+            </div>
+
+            <!-- Col 4: Contact & Support (Clean Icons, Zero Duplicate Emojis) -->
+            <div class="footer-contact-col">
+                <h3 class="footer-heading">Contact & Support</h3>
+                <div class="footer-contact-cards">
+                    <!-- Phone Item -->
+                    <a href="tel:${OWNER_PHONE_TEL}" class="contact-card" title="Call Owner Directly">
+                        <span class="contact-card-icon icon-phone"><i class="ri-phone-fill"></i></span>
+                        <div class="contact-card-info">
+                            <span class="contact-card-label">Direct Phone Call</span>
+                            <span class="contact-card-value">${OWNER_PHONE_DISPLAY}</span>
+                        </div>
+                    </a>
+
+                    <!-- WhatsApp Item -->
+                    <a href="${WHATSAPP_URL}" target="_blank" rel="noopener noreferrer" class="contact-card contact-card-wa" title="Chat on WhatsApp">
+                        <span class="contact-card-icon icon-wa"><i class="ri-whatsapp-fill"></i></span>
+                        <div class="contact-card-info">
+                            <span class="contact-card-label">WhatsApp Support (24/7)</span>
+                            <span class="contact-card-value">+91 ${OWNER_PHONE_RAW}</span>
+                        </div>
+                        <i class="ri-arrow-right-up-line contact-card-arrow"></i>
+                    </a>
+
+                    <!-- Email Item -->
+                    <a href="mailto:thavasikutti89@gmail.com" class="contact-card" title="Send Email">
+                        <span class="contact-card-icon icon-email"><i class="ri-mail-fill"></i></span>
+                        <div class="contact-card-info">
+                            <span class="contact-card-label">Email Support</span>
+                            <span class="contact-card-value">thavasikutti89@gmail.com</span>
+                        </div>
+                    </a>
+
+                    <!-- Location Item -->
+                    <div class="contact-location-card">
+                        <div class="location-header">
+                            <span class="contact-card-icon icon-location"><i class="ri-map-pin-2-fill"></i></span>
+                            <div>
+                                <span class="contact-card-label">Service Center</span>
+                                <strong class="location-name">R TECH PURE WATER</strong>
+                            </div>
+                        </div>
+                        <p class="location-address">
+                            Bus Stop: Chinnakadai, Tiruvannamalai Road, Tirupathur - 635602
+                        </p>
+                        <a href="https://maps.app.goo.gl/uCsNtSsbRwa6mUzb9?g_st=aw" target="_blank" rel="noopener noreferrer" class="location-map-btn">
+                            <i class="ri-direction-line"></i> View on Google Maps
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
+
+        <!-- Footer Bottom -->
         <div class="footer-bottom">
-            <p>© ${new Date().getFullYear()} R-Tech Pure Water. All Rights Reserved. Created by Yoganathan_A | <a href="admin/login.html" class="owner-login-link"><i class="ri-lock-line"></i> Owner Login</a></p>
+            <div class="container footer-bottom-flex">
+                <p class="footer-copy">© ${new Date().getFullYear()} R-Tech Pure Water. All Rights Reserved. Created by Yoganathan_A</p>
+                <a href="admin/login.html" class="owner-login-btn">
+                    <i class="ri-lock-2-line"></i> Owner Login
+                </a>
+            </div>
         </div>
     </footer>`;
 
