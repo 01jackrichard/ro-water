@@ -16,26 +16,31 @@
                 <span class="logo-icon"><i class="ri-drop-fill"></i></span>
                 R-Tech Pure <span>Water</span>
             </a>
-            <nav class="navbar" id="navbar">
-                <a href="index.html"${active('index.html')}>Home</a>
-                <a href="about.html"${active('about.html')}>About</a>
-                <a href="services.html"${active('services.html')}>Services</a>
-                <a href="products.html"${active('products.html')}>Products</a>
-                <a href="contact.html"${active('contact.html')}>Contact</a>
-                <a href="owner-details.html"${active('owner-details.html')}>Owner Details</a>
-                <a href="booking.html" class="nav-btn"${active('booking.html')}>
-                    <i class="ri-calendar-check-line"></i> Book Service
-                </a>
-            </nav>
-            <div class="header-contact-quick">
-                <a href="tel:${OWNER_PHONE_TEL}" class="nav-phone-link" title="Call Owner Directly">
-                    <i class="ri-phone-fill"></i>
-                    <span>${OWNER_PHONE_DISPLAY}</span>
-                </a>
+            <div class="nav-right">
+                <nav class="navbar" id="navbar">
+                    <a href="index.html"${active('index.html')}>Home</a>
+                    <a href="about.html"${active('about.html')}>About</a>
+                    <a href="services.html"${active('services.html')}>Services</a>
+                    <a href="products.html"${active('products.html')}>Products</a>
+                    <a href="contact.html"${active('contact.html')}>Contact</a>
+                    <a href="owner-details.html"${active('owner-details.html')}>Owner Details</a>
+                    <a href="booking.html" class="nav-btn nav-btn-mobile"${active('booking.html')}>
+                        <i class="ri-calendar-check-line"></i> Book Service
+                    </a>
+                </nav>
+                <div class="header-contact-quick">
+                    <a href="booking.html" class="nav-btn nav-btn-desktop"${active('booking.html')}>
+                        <i class="ri-calendar-check-line"></i> Book Service
+                    </a>
+                    <a href="tel:${OWNER_PHONE_TEL}" class="nav-phone-link" title="Call Owner Directly">
+                        <i class="ri-phone-fill"></i>
+                        <span>${OWNER_PHONE_DISPLAY}</span>
+                    </a>
+                </div>
+                <button class="menu-btn" id="menuBtn" type="button" aria-label="Toggle navigation menu">
+                    <i class="ri-menu-line"></i>
+                </button>
             </div>
-            <button class="menu-btn" id="menuBtn" type="button" aria-label="Toggle navigation menu">
-                <i class="ri-menu-line"></i>
-            </button>
         </div>
     </header>`;
 
