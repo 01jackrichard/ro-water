@@ -187,28 +187,7 @@ document.addEventListener("DOMContentLoaded", () => {
             sessionStorage.setItem("latest_booking", JSON.stringify(savedBooking));
         } catch (_) {}
 
-        // 5. Auto-launch WhatsApp Web/App pre-filled message to 9025281363
-        const OWNER_PHONE = "9025281363";
-        const waText = 
-`Hello R-Tech Pure Water!
-I have submitted a new service booking:
-
-Booking Ref: ${savedBooking.ref}
-Customer Name: ${name}
-Phone: ${phone}
-Service: ${service}
-Date: ${bookingDate}
-Address: ${address}
-${message ? `Notes: ${message}\n` : ''}
-Please confirm my appointment. Thank you!`;
-
-        const waUrl = "https://wa.me/91" + OWNER_PHONE + "?text=" + encodeURIComponent(waText);
-
-        try {
-            window.open(waUrl, "_blank");
-        } catch (_) {}
-
-        // 6. Open the beautiful confirmation page
+        // 5. Open the beautiful confirmation page
         form.reset();
         window.location.href = "booking-confirmation.html";
     });

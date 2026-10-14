@@ -76,6 +76,8 @@ module.exports = async (req, res) => {
         }
 
         let smsMessage = '';
+        const orderRef = body.id ? `#${body.id}` : 'NEW';
+        const bookingDate = sanitizeText(body.booking_date, 30);
 
         if (notificationType === 'contact') {
             const name = sanitizeText(body.name, 60);
@@ -108,7 +110,6 @@ Action: Check your admin messages or reply directly.`;
             const name = sanitizeText(body.name, 60);
             const phone = sanitizeText(body.phone, 20);
             const service = sanitizeText(body.service, 80);
-            const bookingDate = sanitizeText(body.booking_date, 30);
             const address = sanitizeText(body.address, 150);
             const notes = sanitizeText(body.message, 200);
 
@@ -118,8 +119,6 @@ Action: Check your admin messages or reply directly.`;
                     error: 'Missing required booking details (name, phone, service, and booking_date are required).'
                 });
             }
-
-            const orderRef = id ? `#${id}` : 'NEW';
 
             smsMessage = 
 `R-TECH PURE WATER - NEW BOOKING ${orderRef}
@@ -132,32 +131,58 @@ Address: ${address || 'On file'}
 ${notes ? `Note: ${notes}` : ''}
 
 Please check the admin dashboard for full details.`;
+        }
+
+        // Extract clean 10-digit customer and owner numbers
+        const ownerDigits = ownerNumber.replace(/\D/g, '').slice(-10);
+        const customerClean = (body.phone || '').replace(/\D/g, '');
+        const customerDigits = customerClean.length >= 10 ? customerClean.slice(-10) : '';
+
+        const customerSmsMessage = notificationType === 'booking'
+            ? `Dear ${body.name || 'Customer'}, your RO service booking (${orderRef}) with R-Tech Pure Water is confirmed for ${bookingDate}. Contact/WhatsApp: 9025281363.`
+            : `Dear ${body.name || 'Customer'}, we have received your message. Our team will contact you shortly. R-Tech Pure Water (+91 9025281363).`;
+
         // 1. Check Indian SMS Gateway (Fast2SMS - instant free SMS to Indian numbers without DLT approval)
         const fast2smsKey = (process.env.FAST2SMS_API_KEY || '').trim();
         if (fast2smsKey) {
             try {
-                const targetDigits = ownerNumber.replace(/\D/g, '').slice(-10);
-                const params = new URLSearchParams({
+                // Send alert to owner
+                const ownerParams = new URLSearchParams({
                     route: 'q',
                     message: smsMessage,
-                    numbers: targetDigits
+                    numbers: ownerDigits
                 });
 
-                const response = await fetch(`https://www.fast2sms.com/dev/bulkV2?${params.toString()}`, {
+                const ownerRes = await fetch(`https://www.fast2sms.com/dev/bulkV2?${ownerParams.toString()}`, {
                     method: 'GET',
-                    headers: {
-                        'Authorization': fast2smsKey,
-                        'Accept': 'application/json'
-                    }
+                    headers: { 'Authorization': fast2smsKey, 'Accept': 'application/json' }
                 });
+                const ownerData = await ownerRes.json();
+                console.log(`[Fast2SMS] Owner alert dispatched to ${ownerDigits}:`, ownerData);
 
-                const data = await response.json();
-                console.log(`[Fast2SMS] Dispatched to ${targetDigits}:`, data);
+                // Send confirmation to customer if different from owner
+                let customerData = null;
+                if (customerDigits && customerDigits !== ownerDigits) {
+                    const custParams = new URLSearchParams({
+                        route: 'q',
+                        message: customerSmsMessage,
+                        numbers: customerDigits
+                    });
+                    const custRes = await fetch(`https://www.fast2sms.com/dev/bulkV2?${custParams.toString()}`, {
+                        method: 'GET',
+                        headers: { 'Authorization': fast2smsKey, 'Accept': 'application/json' }
+                    });
+                    customerData = await custRes.json();
+                    console.log(`[Fast2SMS] Customer confirmation dispatched to ${customerDigits}:`, customerData);
+                }
+
                 return res.status(200).json({
                     success: true,
                     provider: 'fast2sms',
-                    recipient: targetDigits,
-                    result: data
+                    ownerRecipient: ownerDigits,
+                    customerRecipient: customerDigits,
+                    ownerResult: ownerData,
+                    customerResult: customerData
                 });
             } catch (f2sErr) {
                 console.error('[Fast2SMS] Dispatch error:', f2sErr);
@@ -167,20 +192,37 @@ Please check the admin dashboard for full details.`;
         // 2. Check Twilio SMS Gateway
         if (accountSid && authToken && fromNumber) {
             const client = twilio(accountSid, authToken);
-            const result = await client.messages.create({
+            
+            // Dispatch to owner
+            const ownerResult = await client.messages.create({
                 body: smsMessage,
                 from: fromNumber,
                 to: ownerNumber
             });
+            console.log(`[Twilio SMS] SMS sent to owner (${ownerNumber}). SID: ${ownerResult.sid}`);
 
-            console.log(`[Twilio SMS] SMS sent to ${ownerNumber}. SID: ${result.sid}`);
+            // Dispatch confirmation to customer
+            let customerSid = null;
+            if (customerDigits) {
+                try {
+                    const customerTarget = customerClean.startsWith('91') ? `+${customerClean}` : `+91${customerDigits}`;
+                    const custResult = await client.messages.create({
+                        body: customerSmsMessage,
+                        from: fromNumber,
+                        to: customerTarget
+                    });
+                    customerSid = custResult.sid;
+                    console.log(`[Twilio SMS] SMS sent to customer (${customerTarget}). SID: ${custResult.sid}`);
+                } catch (custTwilioErr) {
+                    console.warn(`[Twilio SMS] Could not dispatch to customer:`, custTwilioErr.message);
+                }
+            }
 
             return res.status(200).json({
                 success: true,
                 provider: 'twilio',
-                messageId: result.sid,
-                recipient: ownerNumber,
-                status: result.status
+                ownerSid: ownerResult.sid,
+                customerSid
             });
         }
 

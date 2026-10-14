@@ -316,24 +316,24 @@
                 </div>
             </div>
 
-            <!-- Prominent WhatsApp and Direct Call Action Banner (Visible Immediately) -->
+            <!-- Status & Action Banner -->
             <div class="action-banner" style="background: linear-gradient(135deg, #eafaf1, #e0f2fe); border: 2px solid #86efac; margin-bottom: 25px;">
                 <h3 style="color: #065f46; font-size: 19px;">
-                    <i class="ri-whatsapp-fill" style="color:#25D366; font-size:26px;"></i> Send Booking Message to Owner (9025281363)
+                    <i class="ri-checkbox-circle-fill" style="color:#10b981; font-size:26px;"></i> Booking Dispatched Automatically to Owner
                 </h3>
                 <p style="color: #1f2937; margin-bottom: 16px;">
-                    To complete your booking dispatch, click the button below to send this service ticket directly to our technician at <strong>+91 9025281363</strong> via WhatsApp:
+                    Our service technician at <strong>+91 9025281363</strong> has automatically received your booking details. You can save your booking slip to your WhatsApp or call us directly:
                 </p>
                 
                 <div class="btn-group-confirmation">
-                    <a href="#" id="btnWhatsAppDirect" class="btn-whatsapp-direct" target="_blank" rel="noopener noreferrer">
-                        <i class="ri-whatsapp-line"></i> Send via WhatsApp
+                    <a href="#" id="btnWhatsAppCustomer" class="btn-whatsapp-direct" target="_blank" rel="noopener noreferrer">
+                        <i class="ri-whatsapp-line"></i> Save Details to My WhatsApp
                     </a>
-                    <a href="#" id="btnSmsDirect" class="btn-sms-direct">
-                        <i class="ri-message-2-line"></i> Send Normal SMS (9025281363)
+                    <a href="#" id="btnWhatsAppOwner" class="btn-secondary-action" target="_blank" rel="noopener noreferrer" style="border-color:#25D366; color:#065f46;">
+                        <i class="ri-customer-service-2-line"></i> Chat with Support (9025281363)
                     </a>
                     <a href="tel:+919025281363" class="btn-call-direct">
-                        <i class="ri-phone-line"></i> Call Us
+                        <i class="ri-phone-line"></i> Call Technician
                     </a>
                 </div>
             </div>
@@ -435,31 +435,30 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("displayNotes").textContent = booking.message;
     }
 
-    // Build personalized WhatsApp text for 9025281363
-    const waText = 
-`Hello R-Tech Pure Water!
-I have submitted a new service booking on your website.
+    // WhatsApp confirmation ticket for the customer to save or share
+    const customerShareText = 
+`💧 *R-Tech Pure Water - Service Booking Confirmation*
 
-Reference: ${ref}
-Customer Name: ${booking.name || ''}
-Phone: ${booking.phone || ''}
-Service: ${booking.service || ''}
-Scheduled Date: ${booking.booking_date || ''}
-Address: ${booking.address || ''}
-${booking.message ? `Notes: ${booking.message}\n` : ''}
-Please confirm the technician appointment. Thank you!`;
+*Reference ID:* ${ref}
+*Customer Name:* ${booking.name || ''}
+*Service Requested:* ${booking.service || ''}
+*Scheduled Date:* ${booking.booking_date || ''}
+*Service Address:* ${booking.address || ''}
 
-    const waUrl = "https://wa.me/91" + OWNER_PHONE + "?text=" + encodeURIComponent(waText);
-    document.getElementById("btnWhatsAppDirect").href = waUrl;
+*Service Center:* R-Tech Pure Water, Bus Stop Chinnakadai, Tiruvannamalai Road, Tirupathur
+*Technician Support:* +91 9025281363`;
 
-    // Build normal cellular SMS link for Messages app
-    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
-    const smsSummary = `R-Tech Water Booking ${ref}: Customer ${booking.name || ''}, Phone ${booking.phone || ''}, Service: ${booking.service || ''}, Date: ${booking.booking_date || ''}, Address: ${booking.address || ''}`;
-    const smsUrl = isIOS
-        ? `sms:+91${OWNER_PHONE}&body=${encodeURIComponent(smsSummary)}`
-        : `sms:+91${OWNER_PHONE}?body=${encodeURIComponent(smsSummary)}`;
-    const smsBtn = document.getElementById("btnSmsDirect");
-    if (smsBtn) smsBtn.href = smsUrl;
+    // Opens WhatsApp share so customer can save or forward to their chats
+    const btnCust = document.getElementById("btnWhatsAppCustomer");
+    if (btnCust) {
+        btnCust.href = "https://api.whatsapp.com/send?text=" + encodeURIComponent(customerShareText);
+    }
+
+    // Direct support chat with owner (9025281363)
+    const btnOwner = document.getElementById("btnWhatsAppOwner");
+    if (btnOwner) {
+        btnOwner.href = "https://wa.me/91" + OWNER_PHONE + "?text=" + encodeURIComponent(`Hello R-Tech Pure Water, I would like to inquire about my booking ${ref}.`);
+    }
 });
 </script>
 </body>

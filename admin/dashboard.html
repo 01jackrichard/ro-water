@@ -82,11 +82,12 @@
                             <th>Phone</th>
                             <th>Service</th>
                             <th>Booking Date</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody id="rows">
                         <tr>
-                            <td colspan="5" style="text-align:center;padding:25px;color:#667085;">Loading orders...</td>
+                            <td colspan="6" style="text-align:center;padding:25px;color:#667085;">Loading orders...</td>
                         </tr>
                     </tbody>
                 </table>
@@ -156,11 +157,30 @@ async function loadDashboardData() {
 
         const rowsEl = document.getElementById("rows");
         if (recentRes.data && recentRes.data.length > 0) {
-            rowsEl.innerHTML = recentRes.data.map(v => 
-                row([v.id, v.name, v.phone, v.service, v.booking_date])
-            ).join("");
+            rowsEl.innerHTML = recentRes.data.map(v => {
+                const cleanPhone = (v.phone || '').replace(/\D/g, '');
+                const targetPhone = cleanPhone.length === 10 ? ('91' + cleanPhone) : cleanPhone;
+                const waMessage = encodeURIComponent(`Hello ${v.name}! This is R-Tech Pure Water (+91 9025281363). Your booking (#RTW-${v.id}) for ${v.service} on ${v.booking_date} is confirmed. Our technician will visit you soon. Thank you!`);
+                const waLink = `https://wa.me/${targetPhone}?text=${waMessage}`;
+                const callLink = `tel:${v.phone}`;
+
+                const actionHtml = `
+                    <div style="display:flex;gap:6px;align-items:center;">
+                        <a href="${waLink}" target="_blank" rel="noopener noreferrer" style="background:#25D366;color:white;padding:5px 8px;border-radius:6px;font-size:11px;font-weight:700;display:inline-flex;align-items:center;gap:3px;text-decoration:none;" title="Send WhatsApp Confirmation">
+                            💬 WhatsApp
+                        </a>
+                        <a href="${callLink}" style="background:#087fdb;color:white;padding:5px 8px;border-radius:6px;font-size:11px;font-weight:700;display:inline-flex;align-items:center;gap:3px;text-decoration:none;" title="Call Customer">
+                            📞 Call
+                        </a>
+                    </div>
+                `;
+
+                return "<tr>" + 
+                    [v.id, v.name, v.phone, v.service, v.booking_date].map(c => "<td>" + esc(c) + "</td>").join("") +
+                    "<td>" + actionHtml + "</td></tr>";
+            }).join("");
         } else {
-            rowsEl.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:25px;color:#667085;">No orders found in database.</td></tr>';
+            rowsEl.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:25px;color:#667085;">No orders found in database.</td></tr>';
         }
     } catch (err) {
         console.error("Failed to load dashboard data:", err);

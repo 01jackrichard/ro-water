@@ -53,11 +53,12 @@
                             <th>Address</th>
                             <th>Date</th>
                             <th>Message</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody id="rows">
                         <tr>
-                            <td colspan="8" style="text-align:center;padding:25px;color:#667085;">Loading bookings...</td>
+                            <td colspan="9" style="text-align:center;padding:25px;color:#667085;">Loading bookings...</td>
                         </tr>
                     </tbody>
                 </table>
@@ -90,11 +91,30 @@ async function loadBookings() {
         const r = await cachedSb.from("water_bookings").select("*").order("id", { ascending: false });
         const rowsEl = document.getElementById("rows");
         if (r.data && r.data.length > 0) {
-            rowsEl.innerHTML = r.data.map(v => 
-                row([v.id, v.name, v.email, v.phone, v.service, v.address, v.booking_date, v.message])
-            ).join("");
+            rowsEl.innerHTML = r.data.map(v => {
+                const cleanPhone = (v.phone || '').replace(/\D/g, '');
+                const targetPhone = cleanPhone.length === 10 ? ('91' + cleanPhone) : cleanPhone;
+                const waMessage = encodeURIComponent(`Hello ${v.name}! This is R-Tech Pure Water (+91 9025281363). Your booking (#RTW-${v.id}) for ${v.service} on ${v.booking_date} is confirmed. Our technician will visit your location: ${v.address}. Thank you!`);
+                const waLink = `https://wa.me/${targetPhone}?text=${waMessage}`;
+                const callLink = `tel:${v.phone}`;
+                
+                const actionHtml = `
+                    <div style="display:flex;gap:6px;align-items:center;">
+                        <a href="${waLink}" target="_blank" rel="noopener noreferrer" style="background:#25D366;color:white;padding:6px 10px;border-radius:6px;font-size:12px;font-weight:700;display:inline-flex;align-items:center;gap:4px;text-decoration:none;" title="Send WhatsApp to Customer">
+                            💬 WhatsApp
+                        </a>
+                        <a href="${callLink}" style="background:#087fdb;color:white;padding:6px 10px;border-radius:6px;font-size:12px;font-weight:700;display:inline-flex;align-items:center;gap:4px;text-decoration:none;" title="Call Customer">
+                            📞 Call
+                        </a>
+                    </div>
+                `;
+
+                return "<tr>" + 
+                    [v.id, v.name, v.email, v.phone, v.service, v.address, v.booking_date, v.message].map(c => "<td>" + esc(c) + "</td>").join("") +
+                    "<td>" + actionHtml + "</td></tr>";
+            }).join("");
         } else {
-            rowsEl.innerHTML = '<tr><td colspan="8" style="text-align:center;padding:25px;color:#667085;">No records found.</td></tr>';
+            rowsEl.innerHTML = '<tr><td colspan="9" style="text-align:center;padding:25px;color:#667085;">No records found.</td></tr>';
         }
     } catch (err) {
         console.error("Error loading bookings:", err);
