@@ -3,10 +3,10 @@
     const page = rawPath.endsWith('.html') ? rawPath : (rawPath + '.html');
     const active = (n) => (page === n || page === n.replace('.html', '')) ? ' aria-current="page" class="active"' : '';
 
-    const OWNER_PHONE_RAW = '9025281363';
-    const OWNER_PHONE_DISPLAY = '+91 90252 81363';
-    const OWNER_PHONE_TEL = '+919025281363';
-    const WHATSAPP_URL = 'https://wa.me/919025281363?text=' + encodeURIComponent('Hello R-Tech Pure Water! I would like to inquire about your RO water purifier services.');
+    const OWNER_PHONE_RAW = '8056639518';
+    const OWNER_PHONE_DISPLAY = '+91 80566 39518';
+    const OWNER_PHONE_TEL = '+918056639518';
+    const WHATSAPP_URL = 'https://wa.me/918056639518?text=' + encodeURIComponent('Hello R-Tech Pure Water! I would like to inquire about your RO water purifier services.');
 
     // Top Navigation Header
     const header = `
@@ -44,7 +44,7 @@
         </div>
     </header>`;
 
-    // Footer with verified owner phone 9025281363 (Clean Floating Card Architecture)
+    // Footer with verified owner phone 8056639518 (Clean Floating Card Architecture)
     const footer = `
     <footer class="footer-section">
         <div class="container footer-card-wrapper">
@@ -135,14 +135,14 @@
         </div>
     </footer>`;
 
-    // Floating Interactive Quick Contact Bar (WhatsApp & Direct Call to 9025281363)
+    // Floating Interactive Quick Contact Bar (WhatsApp & Direct Call to 8056639518)
     const floatingBar = `
     <aside class="floating-contact-bar" aria-label="Instant Contact Options">
-        <a href="${WHATSAPP_URL}" target="_blank" rel="noopener noreferrer" class="float-btn float-whatsapp" title="Chat on WhatsApp (+91 9025281363)" aria-label="Chat on WhatsApp">
+        <a href="${WHATSAPP_URL}" target="_blank" rel="noopener noreferrer" class="float-btn float-whatsapp" title="Chat on WhatsApp (+91 80566 39518)" aria-label="Chat on WhatsApp">
             <i class="ri-whatsapp-line"></i>
             <span class="float-tooltip">Chat with us</span>
         </a>
-        <a href="tel:${OWNER_PHONE_TEL}" class="float-btn float-call" title="Call Owner Directly (+91 9025281363)" aria-label="Direct Phone Call">
+        <a href="tel:${OWNER_PHONE_TEL}" class="float-btn float-call" title="Call Owner Directly (+91 80566 39518)" aria-label="Direct Phone Call">
             <i class="ri-phone-line"></i>
             <span class="float-tooltip">Call: ${OWNER_PHONE_RAW}</span>
         </a>

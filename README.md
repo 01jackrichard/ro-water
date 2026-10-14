@@ -6,10 +6,10 @@ A high-performance, modern web application for **R-Tech Pure Water** RO purifica
 
 ## 🚀 Key Features
 
-* **Multi-Channel Owner Notifications (Mobile: `9025281363`)**:
-  * **Automatic SMS Notification**: Dispatches order and contact summaries to `+91 90252 81363` via `/api/send-order-sms` powered by Twilio.
-  * **Instant WhatsApp Direct Messaging**: Every booking and contact inquiry generates a pre-formatted message sent directly to `9025281363` via 1 click.
-  * **Global Floating Quick Contact Widget**: Floating WhatsApp & Direct Call buttons on every page linking directly to `+91 90252 81363`.
+* **Multi-Channel Owner Notifications (Mobile: `8056639518`)**:
+  * **Automatic SMS Notification**: Dispatches order and contact summaries to `+91 80566 39518` via `/api/send-order-sms` powered by Twilio/Fast2SMS.
+  * **Instant WhatsApp Direct Messaging**: Every booking and contact inquiry generates a pre-formatted message sent directly to `8056639518` via 1 click.
+  * **Global Floating Quick Contact Widget**: Floating WhatsApp & Direct Call buttons on every page linking directly to `+91 80566 39518`.
 * **Beautiful Dedicated Booking Confirmation (`booking-confirmation.html`)**:
   * Replaces legacy browser alert popups with a modern, animated confirmation page.
   * Displays unique booking tracking reference (`#RTW-XXXXXX`), customer info, date, and service requested.
@@ -33,17 +33,18 @@ A high-performance, modern web application for **R-Tech Pure Water** RO purifica
 2. Run [`supabase/schema.sql`](supabase/schema.sql) to create tables (`customers`, `water_bookings`, `contacts`) with secure RLS policies and check constraints.
 3. Configure your Supabase project URL, anonymous public key, and owner email in [`js/supabase-config.js`](js/supabase-config.js).
 
-### 2. Twilio SMS Setup (Vercel Environment Variables)
-To enable carrier SMS dispatch to `+91 90252 81363`, configure the following in your Vercel Project Settings > Environment Variables:
+### 2. SMS Gateway Setup (Vercel Environment Variables)
+To enable carrier SMS dispatch to `+91 80566 39518`, configure the following in your Vercel Project Settings > Environment Variables:
 
 | Variable | Description | Default / Example |
 | :--- | :--- | :--- |
-| `OWNER_PHONE_NUMBER` | Mobile number to receive order alerts | `9025281363` |
+| `OWNER_PHONE_NUMBER` | Mobile number to receive order alerts | `8056639518` |
+| `FAST2SMS_API_KEY` | Fast2SMS Quick Transactional Key (India) | `your_fast2sms_key` |
 | `TWILIO_ACCOUNT_SID` | Your Twilio Account SID | `ACxxxxxxxxxxxxxxxxxxxxxxxxxxxx` |
 | `TWILIO_AUTH_TOKEN` | Your Twilio Auth Token | `your_auth_token_here` |
 | `TWILIO_PHONE_NUMBER` | Your Twilio phone number | `+1234567890` |
 
-*(Note: Even before Twilio keys are set up, customer inquiries and bookings are safely recorded in Supabase, and customers can immediately connect to WhatsApp at `9025281363`)*.
+*(Note: Even before SMS keys are set up, customer inquiries and bookings are safely recorded in Supabase, and customers can immediately connect to WhatsApp at `+91 80566 39518`)*.
 
 ### 3. Running Locally
 Run any local static server:
