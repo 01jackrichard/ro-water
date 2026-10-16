@@ -35,9 +35,6 @@
                     <a href="booking.html" class="nav-btn nav-btn-mobile"${active('booking.html')}>
                         <i class="ri-calendar-check-line"></i> Book Service
                     </a>
-                    <button id="pwaMobileNavInstall" class="nav-install-btn-mobile" type="button" aria-label="Install App">
-                        <i class="ri-download-cloud-2-line"></i> Install App
-                    </button>
                     <a href="tel:${OWNER_PHONE_TEL}" class="nav-phone-mobile">
                         <i class="ri-phone-fill"></i> Call: ${OWNER_PHONE_DISPLAY}
                     </a>
@@ -46,10 +43,6 @@
 
             <!-- 3. RIGHT: Call-To-Action Cluster -->
             <div class="nav-actions">
-                <button id="pwaInstallBtn" class="nav-install-btn" type="button" title="Install R-Tech App" aria-label="Install App">
-                    <i class="ri-download-cloud-2-line"></i>
-                    <span>Install App</span>
-                </button>
                 <a href="booking.html" class="nav-btn nav-btn-desktop"${active('booking.html')}>
                     <i class="ri-calendar-check-line"></i>
                     <span>Book Service</span>
