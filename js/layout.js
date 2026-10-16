@@ -54,9 +54,10 @@
                     <i class="ri-calendar-check-line"></i>
                     <span>Book Service</span>
                 </a>
-                <a href="tel:${OWNER_PHONE_TEL}" class="nav-phone-link" title="Call Owner Directly">
+                <a href="tel:${OWNER_PHONE_TEL}" class="nav-phone-link" title="Call Owner Directly (${OWNER_PHONE_DISPLAY})">
                     <i class="ri-phone-fill"></i>
-                    <span>${OWNER_PHONE_DISPLAY}</span>
+                    <span class="phone-text-desktop">${OWNER_PHONE_DISPLAY}</span>
+                    <span class="phone-text-compact">Call Us</span>
                 </a>
                 <button class="menu-btn" id="menuBtn" type="button" aria-label="Toggle navigation menu" aria-expanded="false">
                     <i class="ri-menu-line"></i>
