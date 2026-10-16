@@ -1,5 +1,5 @@
 // Service Worker for R-Tech Pure Water PWA
-const CACHE_NAME = 'rtech-pwa-v1.0.3';
+const CACHE_NAME = 'rtech-pwa-v1.0.4';
 
 const STATIC_ASSETS = [
   './',

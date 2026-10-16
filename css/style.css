@@ -48,98 +48,284 @@ select {
 }
 
 
-/* HEADER */
+/* ========================================================
+   MODERN 3-ZONE FLOATING NAVIGATION BAR
+   ======================================================== */
 
 .header {
     position: sticky;
     top: 0;
     z-index: 1000;
-    background: rgba(255, 255, 255, 0.94);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--border);
+    background: rgba(255, 255, 255, 0.88);
+    backdrop-filter: blur(18px) saturate(180%);
+    -webkit-backdrop-filter: blur(18px) saturate(180%);
+    border-bottom: 1px solid rgba(8, 127, 219, 0.08);
+    transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.header.header-scrolled {
+    background: rgba(255, 255, 255, 0.98);
+    box-shadow: 0 10px 30px -5px rgba(8, 127, 219, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.02);
+    border-bottom-color: rgba(8, 127, 219, 0.14);
 }
 
 .nav-container {
-    min-height: 75px;
+    max-width: 1440px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 32px;
+    min-height: 78px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 24px;
+    position: relative;
+    transition: min-height 0.3s ease;
 }
 
+.header.header-scrolled .nav-container {
+    min-height: 68px;
+}
+
+/* ---------------------------------------------
+   ZONE 1: BRAND LOGO (ALIGNED TO FAR LEFT)
+   --------------------------------------------- */
 .logo {
     display: flex;
     align-items: center;
-    gap: 9px;
-    font-size: 22px;
+    gap: 12px;
+    font-size: 21px;
     font-weight: 800;
     color: var(--dark);
     flex-shrink: 0;
     text-decoration: none;
+    letter-spacing: -0.4px;
+    transition: transform 0.25s ease;
+    user-select: none;
 }
 
-.logo span:last-child {
+.logo:hover {
+    transform: translateY(-1px);
+}
+
+.logo-text span {
     color: var(--primary);
+    background: linear-gradient(135deg, #087fdb 0%, #00a8ff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 .logo-icon {
-    width: 40px;
-    height: 40px;
+    width: 42px;
+    height: 42px;
     border-radius: 50%;
-    background: var(--primary);
-    color: white;
+    background: linear-gradient(135deg, #087fdb 0%, #0284c7 100%);
+    color: #ffffff;
     display: grid;
     place-items: center;
-    flex-shrink: 0;
+    font-size: 20px;
+    box-shadow: 0 4px 14px rgba(8, 127, 219, 0.35);
+    position: relative;
+    transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-.nav-right {
-    display: flex;
-    align-items: center;
-    gap: 24px;
-    margin-left: auto;
+.logo-icon::before {
+    content: '';
+    position: absolute;
+    inset: -3px;
+    border-radius: 50%;
+    border: 2px solid rgba(8, 127, 219, 0.35);
+    animation: waterPulse 3s infinite ease-in-out;
 }
 
+.logo:hover .logo-icon {
+    transform: scale(1.08) rotate(-6deg);
+    box-shadow: 0 6px 18px rgba(8, 127, 219, 0.5);
+}
+
+@keyframes waterPulse {
+    0%, 100% { transform: scale(1); opacity: 0.45; }
+    50% { transform: scale(1.14); opacity: 0; }
+}
+
+/* ---------------------------------------------
+   ZONE 2: FLOATING ISLAND NAVBAR (STRICTLY CENTERED)
+   --------------------------------------------- */
 .navbar {
     display: flex;
     align-items: center;
-    gap: 22px;
 }
 
-.navbar a {
-    font-size: 14.5px;
+@media (min-width: 1025px) {
+    .navbar {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        pointer-events: auto;
+    }
+}
+
+.nav-pill-group {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    background: rgba(241, 245, 249, 0.85);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(226, 232, 240, 0.95);
+    padding: 5px 6px;
+    border-radius: 9999px;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.03), 0 2px 6px rgba(15, 23, 42, 0.03);
+    transition: all 0.3s ease;
+}
+
+.nav-pill-group:hover {
+    background: rgba(241, 245, 249, 0.98);
+    border-color: #cbd5e1;
+    box-shadow: 0 4px 14px rgba(8, 127, 219, 0.08);
+}
+
+.nav-pill-group a {
+    display: inline-flex;
+    align-items: center;
+    padding: 7px 16px;
+    border-radius: 9999px;
+    font-size: 13.5px;
     font-weight: 600;
-    color: var(--dark);
-    transition: 0.3s;
+    color: #475569;
+    text-decoration: none;
+    transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
     white-space: nowrap;
+    position: relative;
 }
 
-.navbar a:hover {
+.nav-pill-group a:hover {
     color: var(--primary);
+    background: rgba(255, 255, 255, 0.85);
+    transform: translateY(-1px);
 }
 
-.navbar a.active, .navbar a[aria-current="page"] {
+.nav-pill-group a.active,
+.nav-pill-group a[aria-current="page"] {
+    background: #ffffff;
     color: var(--primary);
-    font-weight: 600;
+    font-weight: 700;
+    box-shadow: 0 3px 10px rgba(8, 127, 219, 0.16), 0 1px 3px rgba(0, 0, 0, 0.04);
 }
 
+.nav-pill-group a.active::after,
+.nav-pill-group a[aria-current="page"]::after {
+    content: '';
+    position: absolute;
+    bottom: 2px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--primary);
+}
+
+.nav-drawer-actions {
+    display: none;
+}
+
+/* ---------------------------------------------
+   ZONE 3: CTA ACTIONS (ALIGNED TO FAR RIGHT)
+   --------------------------------------------- */
+.nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-left: auto;
+    flex-shrink: 0;
+}
+
+/* 1-Click Install App Pill */
+.nav-install-btn {
+    display: none;
+    align-items: center;
+    gap: 7px;
+    padding: 8px 18px;
+    border-radius: 9999px;
+    color: #0284c7;
+    background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+    border: 1.5px solid #bae6fd;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    white-space: nowrap;
+    box-shadow: 0 2px 6px rgba(2, 132, 199, 0.08);
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.nav-install-btn.pwa-visible {
+    display: inline-flex;
+}
+
+.nav-install-btn:hover {
+    background: #0284c7;
+    color: #ffffff;
+    border-color: #0284c7;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(2, 132, 199, 0.32);
+}
+
+.nav-install-btn i {
+    font-size: 15px;
+    transition: transform 0.2s ease;
+}
+
+.nav-install-btn:hover i {
+    transform: translateY(2px) scale(1.1);
+}
+
+/* Book Service Primary CTA */
 .nav-btn {
     display: inline-flex;
     align-items: center;
-    gap: 7px;
-    padding: 10px 18px;
-    border-radius: 8px;
-    color: white !important;
-    background: var(--primary);
-    font-size: 14px;
+    gap: 8px;
+    padding: 9px 20px;
+    border-radius: 9999px;
+    color: #ffffff !important;
+    background: linear-gradient(135deg, var(--primary) 0%, #0066b3 100%);
+    border: none;
+    font-size: 13.5px;
     font-weight: 700;
     white-space: nowrap;
-    transition: all 0.2s ease;
+    box-shadow: 0 4px 14px rgba(8, 127, 219, 0.3);
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+    overflow: hidden;
+    text-decoration: none;
+}
+
+.nav-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.28), transparent);
+    transition: left 0.65s ease;
+}
+
+.nav-btn:hover::before {
+    left: 100%;
 }
 
 .nav-btn:hover {
-    background: var(--primary-dark);
-    transform: translateY(-1px);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 22px rgba(8, 127, 219, 0.42);
+    filter: brightness(1.05);
+}
+
+.nav-btn i {
+    font-size: 15px;
+    transition: transform 0.25s ease;
+}
+
+.nav-btn:hover i {
+    transform: scale(1.15) rotate(-6deg);
 }
 
 .nav-btn-mobile {
@@ -150,15 +336,73 @@ select {
     display: inline-flex;
 }
 
+/* Call Owner Direct Phone Pill (+91 80566 39518) */
+.nav-phone-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 18px;
+    border-radius: 9999px;
+    background: #ffffff;
+    border: 1.5px solid #dbeafe;
+    color: var(--primary);
+    font-size: 13px;
+    font-weight: 700;
+    white-space: nowrap;
+    text-decoration: none;
+    box-shadow: 0 2px 6px rgba(8, 127, 219, 0.06);
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.nav-phone-link:hover {
+    background: var(--primary);
+    color: #ffffff;
+    border-color: var(--primary);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(8, 127, 219, 0.32);
+}
+
+.nav-phone-link i {
+    font-size: 14px;
+    transition: transform 0.2s ease;
+}
+
+.nav-phone-link:hover i {
+    animation: phoneRing 0.5s ease infinite alternate;
+}
+
+@keyframes phoneRing {
+    0% { transform: rotate(-12deg); }
+    100% { transform: rotate(12deg); }
+}
+
+/* Hamburger Toggle Button */
 .menu-btn {
     display: none;
-    background: none;
-    border: none;
-    font-size: 27px;
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+    background: #f1f5f9;
+    border: 1px solid #e2e8f0;
+    color: #0f172a;
+    font-size: 22px;
     cursor: pointer;
-    color: var(--dark);
-    padding: 6px;
-    border-radius: 6px;
+    transition: all 0.25s ease;
+    place-items: center;
+    padding: 0;
+}
+
+.menu-btn:hover {
+    background: #e0f2fe;
+    color: var(--primary);
+    border-color: #bae6fd;
+    transform: scale(1.04);
+}
+
+.menu-btn.is-active {
+    background: #fee2e2;
+    color: #ef4444;
+    border-color: #fecaca;
 }
 
 
@@ -642,45 +886,142 @@ select {
 
 /* RESPONSIVE */
 
-@media (max-width: 820px) {
+@media (max-width: 1024px) {
+
+    .nav-container {
+        padding: 0 20px;
+    }
 
     .menu-btn {
-        display: block;
+        display: grid;
     }
 
-    .nav-btn-desktop {
-        display: none;
-    }
-
-    .nav-btn-mobile {
-        display: inline-flex;
-        justify-content: center;
-        margin-top: 8px;
+    .nav-actions .nav-btn-desktop,
+    .nav-actions .nav-phone-link,
+    .nav-actions .nav-install-btn {
+        display: none !important;
     }
 
     .navbar {
         display: none;
         position: absolute;
-        top: 75px;
+        top: 100%;
         left: 0;
+        right: 0;
         width: 100%;
-        padding: 20px;
-        background: white;
+        background: rgba(255, 255, 255, 0.98);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border-bottom: 1px solid rgba(8, 127, 219, 0.12);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+        padding: 20px 24px 28px;
+        z-index: 999;
         flex-direction: column;
         align-items: stretch;
-        gap: 8px;
-        border-bottom: 1px solid var(--border);
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        gap: 6px;
     }
 
     .navbar.active {
         display: flex;
+        animation: navDrawerSlide 0.32s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
 
-    .navbar a {
-        padding: 10px 14px;
-        border-radius: 6px;
+    .nav-pill-group {
+        flex-direction: column;
+        align-items: stretch;
+        background: transparent;
+        border: none;
+        padding: 0;
+        gap: 4px;
+        box-shadow: none;
     }
+
+    .nav-pill-group a {
+        width: 100%;
+        padding: 12px 18px;
+        border-radius: 12px;
+        font-size: 15px;
+        color: #1e293b;
+    }
+
+    .nav-pill-group a:hover {
+        background: #f1f5f9;
+        color: var(--primary);
+        transform: translateX(4px);
+    }
+
+    .nav-pill-group a.active,
+    .nav-pill-group a[aria-current="page"] {
+        background: #e0f2fe;
+        color: var(--primary);
+        font-weight: 700;
+        box-shadow: none;
+    }
+
+    .nav-pill-group a.active::after,
+    .nav-pill-group a[aria-current="page"]::after {
+        display: none;
+    }
+
+    .nav-drawer-actions {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin-top: 14px;
+        padding-top: 16px;
+        border-top: 1px solid #f1f5f9;
+    }
+
+    .nav-btn-mobile {
+        display: inline-flex;
+        justify-content: center;
+        width: 100%;
+        padding: 12px;
+        font-size: 14.5px;
+    }
+
+    .nav-install-btn-mobile.pwa-visible {
+        display: inline-flex !important;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 12px 18px;
+        border-radius: 9999px;
+        color: #0284c7;
+        background: #f0f9ff;
+        border: 1.5px solid #bae6fd;
+        font-size: 14.5px;
+        font-weight: 700;
+        cursor: pointer;
+        width: 100%;
+    }
+
+    .nav-phone-mobile {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 12px 18px;
+        border-radius: 9999px;
+        background: #eff6ff;
+        color: var(--primary);
+        font-size: 14px;
+        font-weight: 700;
+        border: 1.5px solid #bfdbfe;
+        text-decoration: none;
+    }
+}
+
+@keyframes navDrawerSlide {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
 
     .hero {
         padding: 70px 0;
@@ -836,56 +1177,6 @@ select {
 .whatsapp-btn-alt:hover {
     background: #d4f7e1;
     transform: translateY(-2px);
-}
-
-/* HEADER QUICK PHONE LINK */
-.header-contact-quick {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.nav-phone-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 8px 16px;
-    background: #eff6ff;
-    border: 1px solid #bfdbfe;
-    color: var(--primary);
-    border-radius: 20px;
-    font-size: 13px;
-    font-weight: 700;
-    transition: all 0.2s ease;
-    white-space: nowrap;
-}
-
-.nav-phone-link:hover {
-    background: var(--primary);
-    color: white !important;
-    border-color: var(--primary);
-    transform: translateY(-1px);
-}
-
-@media (max-width: 1080px) {
-    .nav-right {
-        gap: 16px;
-    }
-    .navbar {
-        gap: 16px;
-    }
-    .navbar a {
-        font-size: 13.5px;
-    }
-    .header-contact-quick .nav-phone-link {
-        display: none;
-    }
-}
-
-@media (max-width: 820px) {
-    .header-contact-quick {
-        display: none;
-    }
 }
 
 /* FLOATING QUICK CONTACT BAR (WhatsApp & Call to 80566 39518) */
@@ -1188,71 +1479,6 @@ select {
 /* ========================================================
    PWA (Progressive Web App) UI Styles
    ======================================================== */
-
-/* Header Install Button (Desktop & Tablet) */
-.nav-install-btn {
-    display: none;
-    align-items: center;
-    gap: 7px;
-    padding: 8px 16px;
-    border-radius: 8px;
-    color: var(--primary);
-    background: #e0f2fe;
-    border: 1px solid #bae6fd;
-    font-size: 13.5px;
-    font-weight: 700;
-    cursor: pointer;
-    white-space: nowrap;
-    transition: all 0.25s ease;
-}
-
-.nav-install-btn.pwa-visible {
-    display: inline-flex;
-}
-
-.nav-install-btn:hover {
-    background: var(--primary);
-    color: #ffffff;
-    border-color: var(--primary);
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(8, 127, 219, 0.25);
-}
-
-.nav-install-btn i {
-    font-size: 16px;
-    transition: transform 0.2s ease;
-}
-
-.nav-install-btn:hover i {
-    transform: translateY(1px);
-}
-
-/* Mobile Navbar Install Button - strictly hidden on desktop screens */
-.nav-install-btn-mobile {
-    display: none !important;
-}
-
-@media (max-width: 820px) {
-    .nav-install-btn {
-        display: none !important;
-    }
-    .nav-install-btn-mobile.pwa-visible {
-        display: inline-flex !important;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
-        padding: 12px 18px;
-        border-radius: 8px;
-        color: #ffffff;
-        background: linear-gradient(135deg, var(--primary), #0284c7);
-        border: none;
-        font-size: 15px;
-        font-weight: 700;
-        cursor: pointer;
-        width: 100%;
-        margin-top: 8px;
-    }
-}
 
 /* Floating Install Shortcut Button */
 .float-install {
