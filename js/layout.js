@@ -27,12 +27,12 @@
                     <a href="booking.html" class="nav-btn nav-btn-mobile"${active('booking.html')}>
                         <i class="ri-calendar-check-line"></i> Book Service
                     </a>
-                    <button id="pwaMobileNavInstall" class="nav-install-btn-mobile" type="button" style="display:none;" aria-label="Install App">
+                    <button id="pwaMobileNavInstall" class="nav-install-btn-mobile" type="button" aria-label="Install App">
                         <i class="ri-download-cloud-2-line"></i> Install App
                     </button>
                 </nav>
                 <div class="header-contact-quick">
-                    <button id="pwaInstallBtn" class="nav-install-btn" type="button" title="Install R-Tech App" style="display:none;" aria-label="Install App">
+                    <button id="pwaInstallBtn" class="nav-install-btn" type="button" title="Install R-Tech App" aria-label="Install App">
                         <i class="ri-download-cloud-2-line"></i>
                         <span>Install App</span>
                     </button>
@@ -145,7 +145,7 @@
     // Floating Interactive Quick Contact Bar (WhatsApp, Direct Call & PWA Install)
     const floatingBar = `
     <aside class="floating-contact-bar" aria-label="Instant Contact Options">
-        <button id="floatPwaInstall" class="float-btn float-install" type="button" title="Install R-Tech RO App" aria-label="Install App" style="display:none;">
+        <button id="floatPwaInstall" class="float-btn float-install" type="button" title="Install R-Tech RO App" aria-label="Install App">
             <i class="ri-download-cloud-2-line"></i>
             <span class="float-tooltip">Install App</span>
         </button>
